@@ -27,7 +27,7 @@ module OmniAuth
       end
 
       def callback_phase
-        log :info "Callback url #{callback_url}"
+        log :info, "Callback url #{callback_url}"
         error = request.params["error_reason"] || request.params["error"]
         stored_state = session.delete("omniauth.state")
         if error
