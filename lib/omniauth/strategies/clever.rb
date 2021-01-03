@@ -50,6 +50,9 @@ module OmniAuth
           if stored_state && (!request.params["state"] || request.params["state"] != stored_state)
             log :info, "Here 2 #{stored_state}"
             fail!(:csrf_detected, CallbackError.new(:csrf_detected, "CSRF detected"))
+          elsif request.user_agent =~ /Windows/ || request.user_agent =~ /Mac/
+            log :info, 'Desktop detected.'
+            fail!("Desktop Login", CallbackError.new("Desktop Login", "Desktop Login"))
           else
             log :info, 'Here 3'
             super
