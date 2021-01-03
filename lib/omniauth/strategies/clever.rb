@@ -26,17 +26,6 @@ module OmniAuth
         end
       end
 
-      def request_phase
-        log :info, 'Request phase initiated.'
-        if request.user_agent =~ /Windows/ || request.user_agent =~ /Mac/
-          log :info, 'Desktop detected.'
-          fail!("Desktop Login", CallbackError.new("Desktop Login", "Desktop Login"))
-        else
-          log :info, 'No desktop detected.'
-          super
-        end
-      end
-
       def callback_phase
         log :info, 'Inner callback phase initiated.'
         error = request.params["error_reason"] || request.params["error"]
@@ -52,7 +41,8 @@ module OmniAuth
             fail!(:csrf_detected, CallbackError.new(:csrf_detected, "CSRF detected"))
           elsif request.user_agent =~ /Windows/ || request.user_agent =~ /Mac/
             log :info, 'Desktop detected.'
-            fail!("Desktop Login", CallbackError.new("Desktop Login", "Desktop Login"))
+            # fail!("Desktop Login", CallbackError.new("Desktop Login", "Desktop Login"))
+            call_app!
           else
             log :info, 'Here 3'
             super
