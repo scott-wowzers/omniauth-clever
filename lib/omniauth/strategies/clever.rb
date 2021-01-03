@@ -27,14 +27,18 @@ module OmniAuth
       end
 
       def request_phase
+        log :info, 'Request phase initiated.'
         if request.user_agent =~ /Windows/ || request.user_agent =~ /Mac/
+          log :info, 'Desktop detected.'
           fail!("Desktop Login", CallbackError.new("Desktop Login", "Desktop Login"))
         else
+          log :info, 'No desktop detected.'
           super
         end
       end
 
       def callback_phase
+        log :info, 'Inner callback phase initiated.'
         error = request.params["error_reason"] || request.params["error"]
         stored_state = session.delete("omniauth.state")
         if error
