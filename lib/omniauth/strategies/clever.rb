@@ -26,6 +26,14 @@ module OmniAuth
         end
       end
 
+      def request_phase
+        if request.user_agent =~ /Windows/ || request.user_agent =~ /Mac/
+          fail!("Desktop Login", CallbackError.new("Desktop Login", "Desktop Login"))
+        else
+          super
+        end
+      end
+
       def callback_phase
         error = request.params["error_reason"] || request.params["error"]
         stored_state = session.delete("omniauth.state")
