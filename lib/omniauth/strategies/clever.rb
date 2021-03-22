@@ -38,7 +38,7 @@ module OmniAuth
           if stored_state && (!request.params["state"] || request.params["state"] != stored_state)
             fail!(:csrf_detected, CallbackError.new(:csrf_detected, "CSRF detected"))
           # On Windows we defer to the app
-          elsif !request.params["skip_app_defer"] && (request.user_agent =~ /Windows/ || request.user_agent =~ /Mac/ || request.user_agent =~ /CrOS/)
+          elsif !request.params["skip_app_defer"] && (request.user_agent =~ /Windows/ || request.user_agent =~ /Mac/)
             call_app!
           else
             super
